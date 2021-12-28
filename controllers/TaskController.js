@@ -15,6 +15,16 @@ class TaskController {
         }
     }
 
+    async getMyTasks(req, res, next){
+        try{
+            const token = req.headers.authorization.split(' ')[1];
+            const tasks = await TaskService.getMyTasks(token);
+            return res.json({tasks})
+        } catch (e) {
+            next(e);
+        }
+    }
+
     async createTask(req, res, next){
         try {
             const errors = validationResult(req);

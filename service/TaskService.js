@@ -49,6 +49,17 @@ class TaskService {
         return formedTasks;
     }
 
+    async getMyTasks(token){
+        const user = jwt.decode(token);
+        const tasks = await Task.findAll({where: {userId: user.id}});
+        const formedTasks = [];
+        for(let i = 0; i < tasks.length; i++){
+            const formedTask = await formTask(tasks[i].id);
+            formedTasks.push(formedTask);
+        }
+        return formedTasks;
+    }
+
     async createTask(projectId, title, description, timeAllotted, statusId, typeId, userId, files){
         const project = await Project.findOne({where: {id: projectId}});
         if(!project){
