@@ -8,7 +8,6 @@ async function formTask(id){
     let formedTask = {...task.dataValues};
     delete formedTask.typeId;
     delete formedTask.statusId;
-    delete formedTask.projectId;
     delete formedTask.userId;
     const files = await File.findAll({attributes: {exclude: ['createdAt', 'updatedAt', 'path', 'commentId', 'taskId']}, where: {taskId: task.id}});
     const status = await Status.findOne({attributes: {exclude: ['createdAt', 'updatedAt']}, where: {id: task.statusId}});
