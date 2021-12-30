@@ -1,6 +1,7 @@
 const ApiError = require('../errors/ApiError');
 const ProjectService = require('../service/ProjectService');
 const {validationResult} = require('express-validator');
+const { User } = require('../models/models');
 
 class ProjectController {
 
@@ -98,8 +99,9 @@ class ProjectController {
                 return next(ApiError.badRequest("Invalid data", errors))
             }
             const {projectId} = req.params;
-            const {userId} = req.body;
-            const isDone = await ProjectService.addUserToProject(projectId, userId);
+            const {email, userId} = req.body;
+            const user = await User.findOne({where: {email}})
+            const isDone = await ProjectService.addUserToProject(projectId, userId || user.id);
             return res.json({added: isDone})
         } catch (e) {
             next(e);

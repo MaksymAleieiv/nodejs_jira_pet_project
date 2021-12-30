@@ -18,7 +18,7 @@ async function formProject(id){
 }
 
 async function formFullProject(id){
-    const project = await Project.findOne({attributes: {exclude: ['createdAt']}, where: {id}});
+    const project = await Project.findOne({where: {id}});
     let formedProject = {...project.dataValues};
     const tasksCount = await Task.count({where: {projectId: id}});
     const usersInProject = await ProjectUser.findAll({where: {projectId: id}}); 
